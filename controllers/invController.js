@@ -53,5 +53,8 @@ invCont.throwError = async function (req, res, next) {
   }
 };
 
+console.log(vehicle)
+console.log(htmlData)
+
 
 module.exports = invCont
