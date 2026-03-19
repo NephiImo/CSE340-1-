@@ -32,7 +32,11 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
-
+// Global middleware
+app.use(async (req, res, next) => {
+  res.locals.nav = await utilities.getNav()
+  next()
+})
 
 // EVERTHIG ELSE - must be last route in list
 
