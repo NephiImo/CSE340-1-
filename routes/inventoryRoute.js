@@ -2,7 +2,6 @@
 const express = require("express")
 const router = new express.Router() 
 const invController = require("../controllers/invController")
-const utilities = require("../utilities/");
 
 // simple async wrapper to avoid repeating try catch blocks in each route handler
 const asyncHandler = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
