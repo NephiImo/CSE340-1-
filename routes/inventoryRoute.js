@@ -22,5 +22,8 @@ router.get("/type/:classificationId", invController.buildByClassificationId);
 // Route to build vehicle detail view
 router.get("/detail/:id", assertHandler(invController.buildDetail, "buildDetail"));
 
+// Error route
+router.get("/broken", assertHandler(invController.throwError, "throwError"));
+
 
 module.exports = router;

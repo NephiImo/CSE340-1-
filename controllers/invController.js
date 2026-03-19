@@ -41,5 +41,17 @@ invCont.buildDetail = async function (req, res, next) {
   }
 };
 
+/* ****************************************
+ *  Process intentional error
+ *  Assignment 3, Task 3
+ * ************************************ */
+invCont.throwError = async function (req, res, next) {
+  try {
+    throw new Error("I am an intentional error");
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 module.exports = invCont
