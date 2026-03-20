@@ -8,6 +8,7 @@ async function getClassifications(){
 }
 
 
+
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
@@ -40,7 +41,6 @@ async function getInventoryById(invId) {
     console.error(error)
   }
 }
-
 
 
 module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById};

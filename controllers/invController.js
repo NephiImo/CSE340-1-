@@ -24,39 +24,27 @@ invCont.buildByClassificationId = async function (req, res, next) {
  *  Assignment 3, Task 1
  * ************************** */
 invCont.buildDetail = async function (req, res, next) {
-  try {
-    const invId = req.params.id;
-    let vehicle = await invModel.getInventoryById(invId);
-
-    console.log(vehicle)
-    console.log(htmlData)
-
-    const htmlData = await utilities.buildSingleVehicleDisplay(vehicle);
-    let nav = await utilities.getNav();
-    const vehicleTitle = `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`;
-    res.render("./inventory/detail", {
-      title: vehicleTitle,
-      nav,
-      message: null,
-      htmlData,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+  const invId = req.params.id
+  let vehicle = await invModel.getInventoryById(invId)
+  const htmlData = await utilities.buildSingleVehicleDisplay(vehicle)
+  let nav = await utilities.getNav()
+  const vehicleTitle =
+    vehicle.inv_year + " " + vehicle.inv_make + " " + vehicle.inv_model
+  res.render("./inventory/detail", {
+    title: vehicleTitle,
+    nav,
+    message: null,
+    htmlData,
+  })
+}
 
 /* ****************************************
  *  Process intentional error
  *  Assignment 3, Task 3
  * ************************************ */
-invCont.throwError = async function (req, res, next) {
-  try {
-    throw new Error("I am an intentional error");
-  } catch (err) {
-    next(err);
-  }
-};
-
+invCont.throwError = async function (req, res) {
+  throw new Error("I am an intentional error")
+}
 
 
 module.exports = invCont
