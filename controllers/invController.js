@@ -36,6 +36,9 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.buildDetail = async function (req, res, next) {
   const invId = req.params.id
   let vehicle = await invModel.getInventoryById(invId)
+  if (!vehicle) {
+    return next({ status: 404, message: "Sorry, no matching vehicle could be found." })
+  }
   const htmlData = await utilities.buildSingleVehicleDisplay(vehicle)
   let nav = await utilities.getNav()
   const vehicleTitle =
@@ -97,11 +100,7 @@ invCont.addClassification = async function (req, res, next) {
     nav = await utilities.getNav() // refresh nav to include new classification
 
     req.flash("notice", `The ${addResult.classification_name} classification was added successfully.`)
-    res.status(201).render("inventory/management", {
-      title: "Vehicle Management",
-      nav,
-      errors: null,
-    })
+    return res.redirect("/inv/")
   } else {
     // Failed to add classification, re-render add-classification view with error message
     req.flash("notice", 'Sorry, there was an error adding the classification. Please try again.')
@@ -120,11 +119,11 @@ invCont.addClassification = async function (req, res, next) {
  * ************************** */
 invCont.buildAddInventory = async function (req, res, next) {
   let nav = await utilities.getNav()
-  const classificationSelect = await utilities.buildClassificationList()
+  const classificationList = await utilities.buildClassificationList()
   res.render("./inventory/add-inventory", {
     title: "Add New Inventory",
     nav,
-    classificationSelect: classificationSelect,
+    classificationList,
     errors: null,
   })
 }
@@ -146,7 +145,7 @@ invCont.addInventory = async function (req, res) {
     inv_color,
     classification_id,
   } = req.body
-  const addResult = await invModel.addInventory(
+  const addResult = await invModel.addInventoryItem(
     inv_make,
     inv_model,
     inv_description,
@@ -161,21 +160,15 @@ invCont.addInventory = async function (req, res) {
 
   if (addResult) {
     const itemName = addResult.inv_make + " " + addResult.inv_model
-    const classificationSelect = await utilities.buildClassificationList()
     req.flash("message success", `The ${itemName} was successfully added.`)
-    res.status(201).render("./inventory/management", {
-      title: "Inventory Management",
-      nav,
-      errors: null,
-      classificationSelect,
-    })
+    return res.redirect("/inv/")
   } else {
-    const classificationSelect = await utilities.buildClassificationList()
+    const classificationList = await utilities.buildClassificationList()
     req.flash("message warning", "Sorry, the insert failed.")
     res.status(501).render("./inventory/add-inventory", {
       title: "Add New Inventory",
       nav,
-      classificationSelect: classificationSelect,
+      classificationList,
       errors: null,
     })
   }
