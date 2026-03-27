@@ -16,21 +16,18 @@ utilities.handleErrors(invController.buildDetail))
 
 // Error route
 router.get("/broken", 
-utilities.handleErrors(invController.throwError));
+utilities.handleErrors(invController.throwError))
 
 // Route to build management view (mounted at /inv in server.js)
 router.get("/", 
-utilities.checkAccountType,
 utilities.handleErrors(invController.buildManagementView))
 
 // Route to build add classification view
 router.get("/add-classification", 
-utilities.checkAccountType,
 utilities.handleErrors(invController.buildAddClassification))
 
 //Process add classification
 router.post("/add-classification", 
-utilities.checkAccountType,
 invValidate.classificationRules(),
 invValidate.checkClassificationData,
 utilities.handleErrors(invController.addClassification))
@@ -38,12 +35,10 @@ utilities.handleErrors(invController.addClassification))
 
 // Route to build add inventory view
 router.get("/add-inventory", 
-utilities.checkAccountType,
 utilities.handleErrors(invController.buildAddInventory))
 
 // Process add inventory
 router.post("/add-inventory", 
-utilities.checkAccountType,
 invValidate.inventoryRules(),
 invValidate.checkInventoryData,
 utilities.handleErrors(invController.addInventory))
