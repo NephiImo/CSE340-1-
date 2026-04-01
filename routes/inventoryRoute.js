@@ -44,7 +44,29 @@ invValidate.inventoryRules(),
 invValidate.checkInventoryData,
 utilities.handleErrors(invController.addInventory))
 
+/* ****************************************
+ * Get vehicles for AJAX Route
+ * Unit 5, Select inv item activity
+ **************************************** */
+router.get("/getInventory/:classification_id",
+utilities.handleErrors(invController.getInventoryJSON))
 
+/* ****************************************
+ * Deliver the edit inventory view
+ * Unit 5, Update Step 1 Activity
+ **************************************** */
+router.get("/edit/:inv_id",
+utilities.handleErrors(invController.editInvItemView))
+
+/* ****************************************
+ * Process the edit inventory request
+ * Unit 5, Update Step 2 Activity
+ **************************************** */
+router.post("/update/",
+  invValidate.inventoryRules(),
+  invValidate.checkUpdateData,
+  utilities.handleErrors(invController.updateInventory)
+)
 
 
 module.exports = router;
