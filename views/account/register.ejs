@@ -5,9 +5,9 @@
   <!-- Flash messages -->
   <%- messages() %>
 
-  <% if (errors) { %>
+  <% if (locals.errors) { %>
     <ul class="notice">
-  <% errors.array().forEach(error => { %>
+  <% locals.errors.array().forEach(error => { %>
     <li><%= error.msg %></li>
   <% }); %>
     </ul>
