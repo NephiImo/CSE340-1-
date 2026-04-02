@@ -21,14 +21,17 @@ utilities.handleErrors(invController.throwError))
 
 // Route to build management view (mounted at /inv in server.js)
 router.get("/", 
+utilities.checkAccountType,
 utilities.handleErrors(invController.buildManagementView))
 
 // Route to build add classification view
 router.get("/add-classification", 
+utilities.checkAccountType,
 utilities.handleErrors(invController.buildAddClassification))
 
 //Process add classification
 router.post("/add-classification", 
+utilities.checkAccountType,
 invValidate.classificationRules(),
 invValidate.checkClassificationData,
 utilities.handleErrors(invController.addClassification))
@@ -36,10 +39,12 @@ utilities.handleErrors(invController.addClassification))
 
 // Route to build add inventory view
 router.get("/add-inventory", 
+utilities.checkAccountType,
 utilities.handleErrors(invController.buildAddInventory))
 
 // Process add inventory
 router.post("/add-inventory", 
+utilities.checkAccountType,
 invValidate.inventoryRules(),
 invValidate.checkInventoryData,
 utilities.handleErrors(invController.addInventory))
@@ -49,6 +54,7 @@ utilities.handleErrors(invController.addInventory))
  * Unit 5, Select inv item activity
  **************************************** */
 router.get("/getInventory/:classification_id",
+utilities.checkAccountType,
 utilities.handleErrors(invController.getInventoryJSON))
 
 /* ****************************************
@@ -56,6 +62,7 @@ utilities.handleErrors(invController.getInventoryJSON))
  * Unit 5, Update Step 1 Activity
  **************************************** */
 router.get("/edit/:inv_id",
+utilities.checkAccountType,
 utilities.handleErrors(invController.editInvItemView))
 
 /* ****************************************
@@ -63,6 +70,7 @@ utilities.handleErrors(invController.editInvItemView))
  * Unit 5, Update Step 2 Activity
  **************************************** */
 router.post("/update/",
+  utilities.checkAccountType,
   invValidate.inventoryRules(),
   invValidate.checkUpdateData,
   utilities.handleErrors(invController.updateInventory)
@@ -73,6 +81,7 @@ router.post("/update/",
  * Unit 5, Delete Activity
  **************************************** */
 router.get("/delete/:inv_id",
+  utilities.checkAccountType,
   utilities.handleErrors(invController.deleteView)
 )
 
@@ -81,6 +90,7 @@ router.get("/delete/:inv_id",
  * Unit 5, Delete Activity
  **************************************** */
 router.post("/delete", 
+utilities.checkAccountType,
 utilities.handleErrors(invController.deleteItem)
 )
 

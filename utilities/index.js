@@ -159,5 +159,34 @@ Util.checkLogin = (req, res, next) => {
   }
 }
 
+/* ****************************************
+ * Assignment 5 - Task 2
+ * Middleware: allow only Employee or Admin
+ **************************************** */
+Util.checkAccountType = (req, res, next) => {
+  try {
+    console.log("AUTH CHECK: res.locals.accountData =>", res.locals.accountData);
+
+    const acct = res.locals.accountData;
+
+    if (!acct) {
+      req.flash("notice", "Please log in to access that page.");
+      return res.redirect("/account/login");
+    }
+
+    // Normalize for safety
+    const t = (acct.account_type || "").toLowerCase().trim();
+
+    if (t === "employee" || t === "admin") {
+      return next();
+    }
+
+    req.flash("notice", "You are not authorized to view that page.");
+    return res.redirect("/account/login");
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 module.exports = Util
