@@ -1,0 +1,68 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect("/") } %>
+
+<%- messages() %>
+
+<section class="favorites-page">
+  <p class="favorites-intro">
+    Keep track of vehicles you want to revisit from your account.
+  </p>
+
+  <% if (favorites.length > 0) { %>
+  <div class="saved-vehicle-grid">
+    <% favorites.forEach((vehicle) => { %>
+    <article class="saved-vehicle-card">
+      <a href="/inv/detail/<%= vehicle.inv_id %>" class="saved-vehicle-image-link">
+        <img
+          src="<%= vehicle.inv_image %>"
+          alt="Image of <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>"
+          class="saved-vehicle-image"
+        >
+      </a>
+
+      <div class="saved-vehicle-copy">
+        <p class="saved-vehicle-class"><%= vehicle.classification_name %></p>
+        <h2>
+          <a href="/inv/detail/<%= vehicle.inv_id %>">
+            <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>
+          </a>
+        </h2>
+        <p class="saved-vehicle-description"><%= vehicle.inv_description %></p>
+        <dl class="saved-vehicle-meta">
+          <div>
+            <dt>Price</dt>
+            <dd>$<%= Number(vehicle.inv_price).toLocaleString("en-US") %></dd>
+          </div>
+          <div>
+            <dt>Miles</dt>
+            <dd><%= Number(vehicle.inv_miles).toLocaleString("en-US") %></dd>
+          </div>
+          <div>
+            <dt>Color</dt>
+            <dd><%= vehicle.inv_color %></dd>
+          </div>
+          <div>
+            <dt>Saved</dt>
+            <dd><%= new Date(vehicle.favorite_created).toLocaleDateString("en-US") %></dd>
+          </div>
+        </dl>
+      </div>
+
+      <form action="/account/favorites/remove" method="post" class="saved-vehicle-form">
+        <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>">
+        <input type="hidden" name="source" value="favorites">
+        <button type="submit" class="favorite-btn favorite-btn-secondary">
+          Remove From Saved Vehicles
+        </button>
+      </form>
+    </article>
+    <% }) %>
+  </div>
+  <% } else { %>
+  <div class="favorites-empty">
+    <p>You have not saved any vehicles yet.</p>
+    <a href="/" class="favorite-link">Browse Inventory</a>
+  </div>
+  <% } %>
+</section>

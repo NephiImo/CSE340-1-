@@ -3,6 +3,7 @@
 * ********************************* */
 // Require Statements
 const accountModel = require("../models/account-model")
+const favoriteModel = require("../models/favorite-model")
 const utilities = require("../utilities")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
@@ -138,11 +139,15 @@ async function accountLogin(req, res) {
  **************************************** */
 async function buildManagement(req, res, next) {
   let nav = await utilities.getNav()
+  const savedVehicleCount = await favoriteModel.countFavoritesByAccountId(
+    res.locals.accountData.account_id
+  )
   res.render("account/management", {
     title: "Account Management",
     nav,
     errors: null,
     accountData: res.locals.accountData,
+    savedVehicleCount,
   })
 }
 

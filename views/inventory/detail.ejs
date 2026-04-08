@@ -5,9 +5,37 @@
   res.redirect('/')
 } %>
 
+<%- messages() %>
+
 <% if(Object.entries(htmlData).length > 0){ %>
 
 <%- htmlData %>
+
+<section class="vehicle-save-panel">
+  <% if (locals.loggedin) { %>
+  <h2>Save This Vehicle</h2>
+  <p>Keep this vehicle in your account so you can find it again quickly.</p>
+
+  <% if (isFavorite) { %>
+  <form action="/account/favorites/remove" method="post" class="favorite-form">
+    <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>">
+    <input type="hidden" name="source" value="detail">
+    <button type="submit" class="favorite-btn favorite-btn-secondary">Remove From Saved Vehicles</button>
+  </form>
+  <% } else { %>
+  <form action="/account/favorites/save" method="post" class="favorite-form">
+    <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>">
+    <input type="hidden" name="source" value="detail">
+    <button type="submit" class="favorite-btn">Save To My Account</button>
+  </form>
+  <% } %>
+
+  <p><a href="/account/favorites" class="favorite-link">View all saved vehicles</a></p>
+  <% } else { %>
+  <h2>Want to save this vehicle?</h2>
+  <p><a href="/account/login" class="favorite-link">Log in to your account</a> to build your saved vehicles list.</p>
+  <% } %>
+</section>
 <% } else { %>
 <p class="notice">Sorry, no matching vehicle could be found.</p>
 <% } %>

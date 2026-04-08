@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const favoriteModel = require("../models/favorite-model")
 const utilities = require("../utilities/")
 const invCont = {}
 
@@ -41,6 +42,16 @@ invCont.buildDetail = async function (req, res, next) {
   }
   const htmlData = await utilities.buildSingleVehicleDisplay(vehicle)
   let nav = await utilities.getNav()
+  let isFavorite = false
+
+  if (res.locals.loggedin && res.locals.accountData) {
+    const favorite = await favoriteModel.getFavorite(
+      res.locals.accountData.account_id,
+      vehicle.inv_id
+    )
+    isFavorite = Boolean(favorite)
+  }
+
   const vehicleTitle =
     vehicle.inv_year + " " + vehicle.inv_make + " " + vehicle.inv_model
   res.render("./inventory/detail", {
@@ -48,6 +59,8 @@ invCont.buildDetail = async function (req, res, next) {
     nav,
     message: null,
     htmlData,
+    vehicle,
+    isFavorite,
   })
 }
 

@@ -13,6 +13,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
+const favoriteModel = require("./models/favorite-model")
 const utilities = require("./utilities/index")
 const session = require("express-session")
 const pool = require('./database/')
@@ -70,7 +71,7 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 
 // Account routes
-app.use("/account", require("./routes/accountRoute"))
+app.use("/account", accountRoute)
 
 
 // EVERTHIG ELSE - must be last route in list
@@ -109,6 +110,13 @@ const host = process.env.HOST
 /* ***********************
  * Log statement to confirm server operation
  *************************/
-app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
-})
+favoriteModel
+  .initializeFavoritesTable()
+  .catch((error) => {
+    console.error("Saved vehicles table initialization failed:", error.message)
+  })
+  .finally(() => {
+    app.listen(port, () => {
+      console.log(`app listening on ${host}:${port}`)
+    })
+  })

@@ -1,0 +1,64 @@
+Additional Enhancement: Saved Vehicles
+
+Description
+I added a new Saved Vehicles feature for logged-in users.
+
+This enhancement allows a user to:
+- save a vehicle from the vehicle detail page
+- view all saved vehicles from their account area
+- remove a vehicle from their saved list
+
+Database Interaction
+- A new table named account_favorite stores the relationship between an account and a vehicle.
+- The table includes:
+  favorite_id
+  account_id
+  inv_id
+  favorite_created
+
+What Was Added
+- Model:
+  models/favorite-model.js
+  Handles creating, reading, counting, adding, and removing saved vehicles.
+
+- Controller:
+  controllers/favoriteController.js
+  Handles building the saved vehicles page and processing save/remove actions.
+
+- Validation:
+  utilities/favorite-validation.js
+  Validates the selected vehicle before saving or removing it.
+
+- Routes:
+  account routes were updated to support:
+  /account/favorites
+  /account/favorites/save
+  /account/favorites/remove
+
+- Views:
+  views/account/favorites.ejs
+  New page that shows all saved vehicles for the logged-in user.
+
+  views/inventory/detail.ejs
+  Updated to include Save To My Account / Remove From Saved Vehicles buttons.
+
+  views/account/management.ejs
+  Updated to show the number of saved vehicles and a link to the saved vehicles page.
+
+How To Navigate To The Feature
+1. Start the application.
+2. Open the site in the browser.
+3. Log in to an existing account, or register a new account and then log in.
+4. From the home page, click any vehicle classification in the navigation bar.
+5. Select a vehicle to open its detail page.
+6. On the vehicle detail page, click Save To My Account.
+7. Click My Account in the header.
+8. On the Account Management page, click View Saved Vehicles.
+9. The Saved Vehicles page will display all vehicles saved by that account.
+10. If desired, click Remove From Saved Vehicles to delete one from the list.
+
+Notes
+- Users must be logged in to save vehicles.
+- The feature works for normal client accounts.
+- The new database script is also saved in:
+  database/additional-enhancement.sql

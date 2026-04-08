@@ -6,8 +6,10 @@
 const express = require("express")
 const router = new express.Router()
 const accountController = require("../controllers/accountController")
+const favoriteController = require("../controllers/favoriteController")
 const utilities = require("../utilities")
 const regValidate = require('../utilities/account-validation')
+const favoriteValidate = require("../utilities/favorite-validation")
 
 
 /************************ Routes ***********************/
@@ -47,6 +49,28 @@ router.get(
   "/",
   utilities.checkLogin,
   utilities.handleErrors(accountController.buildManagement)
+)
+
+router.get(
+  "/favorites",
+  utilities.checkLogin,
+  utilities.handleErrors(favoriteController.buildFavoritesView)
+)
+
+router.post(
+  "/favorites/save",
+  utilities.checkLogin,
+  favoriteValidate.favoriteRules(),
+  favoriteValidate.checkFavoriteData,
+  utilities.handleErrors(favoriteController.saveFavorite)
+)
+
+router.post(
+  "/favorites/remove",
+  utilities.checkLogin,
+  favoriteValidate.favoriteRules(),
+  favoriteValidate.checkFavoriteData,
+  utilities.handleErrors(favoriteController.removeFavorite)
 )
 
 /* ****************************************
